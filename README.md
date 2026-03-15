@@ -17,5 +17,12 @@ Ky projekt është një sistem për menaxhimin e autoshkollës.
 - C#
 - PostgreSQL
 
+## Si ta ekzekutosh projektin
+### 2️⃣ Frontend (HTML / CSS / JS)
+1. Hape folderin `Frontend` me HTML/JS/CSS.  
+2. Thjesht hap `index.html` në browser (Chrome/Edge/Firefox).  
+3. Frontend-i komunikon automatikisht me backend-in për të marrë oraret, rezervimet dhe teorinë.  
+
+
 Autori: Elma Arifi
 Universiteti i Mitrovicës 2026
