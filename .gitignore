@@ -1,5 +1,23 @@
-bin/
-obj/
+# Visual Studio
 .vs/
 *.user
 *.suo
+*.userosscache
+*.sln.docstates
+
+# Build
+bin/
+obj/
+Debug/
+Release/
+
+# Rider
+.idea/
+
+# Npgsql / Database secrets
+appsettings.Development.json
+
+# Node / Frontend (nëse ke)
+node_modules/
+dist/
+.env
