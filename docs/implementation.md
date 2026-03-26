@@ -100,13 +100,13 @@ Sistemi funksionon plotësisht dhe mbështet operacionet CRUD:
 ## Screenshot
 
 ### GET /api/slots
-![GET Screenshot](images/get.png)
+![GET Screenshot](Images/get.png)
 
 ### POST /api/slots
-![POST Screenshot](images/post.png)
+![POST Screenshot](Images/post.png)
 
 ### PUT /api/slots/{id}
-![UPDATE Screenshot](images/update.png)
+![UPDATE Screenshot](Images/update.png)
 
 ### DELETE /api/slots/{id}
-![DELETE Screenshot](images/delete.png)
+![DELETE Screenshot](Images/delete.png)
