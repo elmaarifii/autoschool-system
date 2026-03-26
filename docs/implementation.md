@@ -105,12 +105,8 @@ Sistemi funksionon plotësisht dhe mbështet operacionet CRUD:
 ### POST /api/slots
 ![POST Screenshot](images/post.png)
 
-### GETBYID /api/slots/{id}
-![GETBYID Screenshot](images/getbyid.png)
+### PUT /api/slots/{id}
+![UPDATE Screenshot](images/update.png)
 
-### UPDATE /api/slots
-![UPDATE Screenshot](image/update.png)
-
-### DELETE /api/slots
-![DELETE Screenshot](image/delete.png)
-
+### DELETE /api/slots/{id}
+![DELETE Screenshot](images/delete.png)
