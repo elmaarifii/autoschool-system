@@ -102,6 +102,9 @@ Sistemi funksionon plotësisht dhe mbështet operacionet CRUD:
 ### GET /api/slots
 ![GET Screenshot](Images/get.png)
 
+### GETBYID /api/slots
+![GETBYID Screenshot](Images/getbyid.png)
+
 ### POST /api/slots
 ![POST Screenshot](Images/post.png)
 
