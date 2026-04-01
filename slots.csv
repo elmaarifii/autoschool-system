@@ -1,5 +1,5 @@
 Id,InstructorName,Date,Time,IsBooked
-1,Arben,2026-04-01,10:00,False
+1,Arben,2026-04-01,10:00,True
 2,Arben,2026-04-01,12:00,False
 3,Driton,2026-04-02,09:00,False
 4,Driton,2026-04-02,11:00,True
