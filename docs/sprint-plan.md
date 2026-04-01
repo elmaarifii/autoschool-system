@@ -67,6 +67,12 @@ GET /api/slots?instructorName=Arben&isBooked=false
 Rezultati:
 Shfaqen vetëm oraret e instruktorit “Arben” që janë të lira
 
+Shembull tjetër:
+GET /api/slots?isBooked=true
+
+Rezultati:
+Shfaqen vetëm oraret e rezervuara
+
 Arkitektura:
 
 * Controller merr parametrat
@@ -138,8 +144,4 @@ Qëllimi i testeve:
 * Testimi i rasteve kufitare (edge cases)
 * Parandalimi i bug-eve
 
----
 
-## Afati
-
-* Deadline: Martë, 8 Prill 2026, ora 08:30
