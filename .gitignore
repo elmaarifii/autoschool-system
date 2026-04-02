@@ -1,23 +1,69 @@
-# Visual Studio
+# ==============================
+# .NET / Visual Studio
+# ==============================
+
+bin/
+obj/
 .vs/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
-# Build
-bin/
-obj/
+# Build results
 Debug/
 Release/
 
-# Rider
-.idea/
+# ==============================
+# OS Files
+# ==============================
 
-# Npgsql / Database secrets
-appsettings.Development.json
+desktop.ini
+Thumbs.db
 
-# Node / Frontend (nëse ke)
+# ==============================
+# Logs
+# ==============================
+
+*.log
+
+# ==============================
+# Environment files
+# ==============================
+
+.env
+
+# ==============================
+# Node / Frontend (nëse përdor JS)
+# ==============================
+
 node_modules/
 dist/
-.env
+build/
+
+# ==============================
+# VS Code
+# ==============================
+
+.vscode/
+
+# ==============================
+# Rider / JetBrains
+# ==============================
+
+.idea/
+
+# ==============================
+# Temporary files
+# ==============================
+
+*.tmp
+*.cache
+
+# ==============================
+# Database (optional)
+# ==============================
+
+*.db
+
+# slots.csv

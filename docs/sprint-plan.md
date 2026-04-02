@@ -1,4 +1,4 @@
-﻿# Sprint 2 Plan — Elma Arifi
+# Sprint 2 Plan — Elma Arifi
 
 Data: 1 Prill 2026
 
@@ -144,4 +144,9 @@ Qëllimi i testeve:
 * Testimi i rasteve kufitare (edge cases)
 * Parandalimi i bug-eve
 
+---
+
+## Afati
+
+* **Deadline:** Martë, 8 Prill 2026, ora 08:30 (dorëzim i kodit final + `docs/sprint-report.md` në GitHub dhe link në Student Hub)
 

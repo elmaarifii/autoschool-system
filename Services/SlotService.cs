@@ -42,16 +42,6 @@ namespace AutoshkollaAPI.Services
             if (string.IsNullOrWhiteSpace(slot.Time))
                 throw new Exception("Time cannot be empty");
 
-            var existingSlots = _repository.GetAll();
-            if (slot.Id <= 0)
-            {
-                slot.Id = existingSlots.Count == 0 ? 1 : existingSlots.Max(s => s.Id) + 1;
-            }
-            else if (existingSlots.Any(s => s.Id == slot.Id))
-            {
-                throw new Exception($"Slot with Id {slot.Id} already exists");
-            }
-
             _repository.Add(slot);
             _repository.Save();
         }
