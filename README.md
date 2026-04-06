@@ -1,63 +1,79 @@
-🚗 Autoschool System
+# 🚗 Autoschool System
 
-Autoschool System është një aplikacion full-stack për menaxhimin e autoshkollës, i ndërtuar për të organizuar në mënyrë efikase procesin e mësimit teorik dhe praktik të vozitjes.
+**Autoschool System** është një aplikacion full-stack për menaxhimin e autoshkollës, i ndërtuar për të organizuar në mënyrë efikase procesin e mësimit teorik dhe praktik të vozitjes.
 
 Ky sistem mundëson bashkëpunimin midis klientëve, instruktorëve dhe administratorëve, duke automatizuar oraret, rezervimet dhe përmbajtjen mësimore.
 
-🎯 Qëllimi i Projektit
+---
+
+## 🎯 Qëllimi i Projektit
 
 Qëllimi i këtij projekti është të krijojë një sistem të strukturuar dhe të shkallëzueshëm për:
 
-Menaxhimin e orareve të vozitjes
-Rezervimin dhe anulimin e orëve
-Shpërndarjen e materialeve teorike
-Testimin e njohurive përmes kuizeve
-👥 Rolet në Sistem
-👤 Klienti
-Regjistrohet dhe kyçet në sistem
-Shikon oraret e lira
-Rezervon dhe anulon orë
-Akseson materiale teorike
-Zgjidh kuize dhe sheh rezultatet
-👨‍🏫 Instruktori
-Vendos oraret e lira
-Shikon rezervimet
-Publikon materiale teorike
-Krijon kuize për testim
-🛠️ Administratori
-Menaxhon përdoruesit
-Menaxhon materialet dhe kuizet
-Kontrollon sistemin në tërësi
-⚙️ Funksionalitetet Kryesore
-✅ Regjistrim dhe autentikim (Login/Register)
-📅 Menaxhimi i orareve të instruktorëve
-🧾 Rezervimi dhe anulimi i orëve
-📚 Materiale teorike (tekst, video, dokumente)
-📝 Kuize për testimin e njohurive
-📊 Ruajtja e rezultateve dhe progresit
-🛡️ Menaxhim nga administratori
-🧪 Unit Testing
+- Menaxhimin e orareve të vozitjes  
+- Rezervimin dhe anulimin e orëve  
+- Shpërndarjen e materialeve teorike  
+- Testimin e njohurive përmes kuizeve  
 
-Në projekt është shtuar edhe testing me xUnit për të testuar funksionalitetet kryesore të backend-it.
+---
 
-📦 Setup i testimeve
+## 👥 Rolet në Sistem
+
+### 👤 Klienti
+- Regjistrohet dhe kyçet në sistem  
+- Shikon oraret e lira  
+- Rezervon dhe anulon orë  
+- Akseson materiale teorike  
+- Zgjidh kuize dhe sheh rezultatet  
+
+### 👨‍🏫 Instruktori
+- Vendos oraret e lira  
+- Shikon rezervimet  
+- Publikon materiale teorike  
+- Krijon kuize për testim  
+
+### 🛠️ Administratori
+- Menaxhon përdoruesit  
+- Menaxhon materialet dhe kuizet  
+- Kontrollon sistemin në tërësi  
+
+---
+
+## ⚙️ Funksionalitetet Kryesore
+
+- ✅ Regjistrim dhe autentikim (Login/Register)  
+- 📅 Menaxhimi i orareve të instruktorëve  
+- 🧾 Rezervimi dhe anulimi i orëve  
+- 📚 Materiale teorike (tekst, video, dokumente)  
+- 📝 Kuize për testimin e njohurive  
+- 📊 Ruajtja e rezultateve dhe progresit  
+- 🛡️ Menaxhim nga administratori  
+
+---
+
+## 🧪 Unit Testing
+
+Në projekt është shtuar testing me **xUnit** për të testuar funksionalitetet kryesore të backend-it.
+
+### 📦 Setup i testimeve
 
 Testet gjenden në projektin:
 
+
 AutoshkollaAPI.Tests
-▶️ Si të ekzekutohen testet
+
+
+### ▶️ Si të ekzekutohen testet
 
 Nga root folder i projektit:
 
+```bash
 dotnet test AutoshkollaAPI.Tests
 
 Ose:
 
 dotnet test AutoshkollaAPI.sln
 ✅ Çfarë testohet
-
-Testet përfshijnë:
-
 ✔ Rast normal (valid input)
 ✔ Rast kufitar (invalid input, p.sh. emër bosh)
 ✔ Verifikim i logjikës së shërbimeve (Services)
@@ -80,15 +96,14 @@ Projekti ndjek një arkitekturë me shtresa (Layered Architecture):
 Autoschool-System/
 │
 ├── AutoshkollaAPI/
-│   ├── Controllers/   # API endpoints (UI Layer)
-│   ├── Models/        # Entitetet (User, Booking, Slot, etj.)
-│   ├── Services/      # Logjika e biznesit
-│   ├── Data/          # DbContext + Repository Pattern
-│   ├── docs/          # UML + dokumentim
+│   ├── Controllers/        # API endpoints (UI Layer)
+│   ├── Models/             # Entitetet (User, Booking, Slot, etj.)
+│   ├── Services/           # Logjika e biznesit
+│   ├── Data/               # DbContext + Repository Pattern
 │
+├── docs/                   # UML + dokumentim
 ├── AutoshkollaAPI.Tests/   # Unit tests (xUnit)
-│
-├── frontend/          # HTML / CSS / JS
+├── frontend/               # HTML / CSS / JS
 │   └── index.html
 │
 ├── .gitignore
@@ -111,8 +126,8 @@ Varet nga abstractions, jo implementime konkrete
 
 Është implementuar Repository Pattern për ndarjen e logjikës së aksesit në të dhëna:
 
-IRepository<T> – interface bazë
-FileRepository<T> – implementim për ruajtje në file
+IRepository – interface bazë
+FileRepository – implementim për ruajtje në file
 
 Kjo e bën sistemin:
 
