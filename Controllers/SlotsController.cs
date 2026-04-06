@@ -19,10 +19,10 @@ namespace AutoshkollaAPI.Controllers
 
         // GET: api/slots
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(string instructorName = null, bool? isBooked = null)
         {
-            var slots = _service.GetAll();
-            return Ok(slots);
+            var result = _service.GetAll(instructorName, isBooked);
+            return Ok(result);
         }
 
         // GET: api/slots/1
@@ -32,7 +32,7 @@ namespace AutoshkollaAPI.Controllers
             var slot = _service.GetById(id);
 
             if (slot == null)
-                return NotFound("Slot not found");
+                return NotFound("Slot nuk u gjet");
 
             return Ok(slot);
         }
@@ -48,15 +48,22 @@ namespace AutoshkollaAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Gabim: " + ex.Message);
             }
         }
         //DELETE
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _service.Delete(id);
-            return Ok("Deleted successfully");
+            try
+            {
+                _service.Delete(id);
+                return Ok("Deleted successfully");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut("{id}")]
