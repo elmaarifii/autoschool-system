@@ -9,10 +9,19 @@ namespace AutoshkollaAPI.Data
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<AvailableSlot> AvailableSlots { get; set; }
-        public DbSet<Booking> Bookings { get; set; }
-        public DbSet<Material> Materials { get; set; }
-        public DbSet<Quiz> Quizzes { get; set; }
+        public DbSet<User> Users => Set<User>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasKey(u => u.Id);
+                entity.HasIndex(u => u.Email).IsUnique();
+                entity.Property(u => u.Name).HasMaxLength(200).IsRequired();
+                entity.Property(u => u.Email).HasMaxLength(256).IsRequired();
+                entity.Property(u => u.PasswordHash).IsRequired();
+                entity.Property(u => u.Role).HasMaxLength(50).IsRequired();
+            });
+        }
     }
 }

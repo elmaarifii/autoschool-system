@@ -1,5 +1,5 @@
-using AutoshkollaAPI.Models;
 using AutoshkollaAPI.Data;
+using AutoshkollaAPI.Models;
 
 namespace AutoshkollaAPI.Services
 {
@@ -12,114 +12,95 @@ namespace AutoshkollaAPI.Services
             _repository = repository;
         }
 
-        // LISTO me filter
         public List<AvailableSlot> GetAll(string? instructorName = null, bool? isBooked = null)
         {
-            try
+            var slots = _repository.GetAll();
+
+            if (!string.IsNullOrWhiteSpace(instructorName))
             {
-                var slots = _repository.GetAll();
-
-                if (!string.IsNullOrWhiteSpace(instructorName))
-                {
-                    slots = slots
-                        .Where(s => s.InstructorName.ToLower().Contains(instructorName.ToLower()))
-                        .ToList();
-                }
-
-                if (isBooked.HasValue)
-                {
-                    slots = slots
-                        .Where(s => s.IsBooked == isBooked.Value)
-                        .ToList();
-                }
-
-                return slots;
+                slots = slots
+                    .Where(s => s.InstructorName.Contains(instructorName.Trim(), StringComparison.OrdinalIgnoreCase))
+                    .ToList();
             }
-            catch (Exception ex)
+
+            if (isBooked.HasValue)
             {
-                throw new Exception("Gabim gjatë kërkimit të orareve: " + ex.Message);
+                slots = slots
+                    .Where(s => s.IsBooked == isBooked.Value)
+                    .ToList();
             }
+
+            return slots;
         }
 
-        // GJEJ sipas ID
         public AvailableSlot? GetById(int id)
         {
-            try
-            {
-                return _repository.GetAll().FirstOrDefault(s => s.Id == id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Gabim gjatë kërkimit të slot-it: " + ex.Message);
-            }
+            return _repository.GetAll().FirstOrDefault(s => s.Id == id);
         }
 
-        // SHTO me validim
         public void Add(AvailableSlot slot)
         {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(slot.InstructorName))
-                    throw new Exception("Instructor name cannot be empty");
-
-                if (string.IsNullOrWhiteSpace(slot.Time))
-                    throw new Exception("Time cannot be empty");
-
-                _repository.Add(slot);
-                _repository.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Gabim gjatë shtimit të slot-it: " + ex.Message);
-            }
+            ValidateSlot(slot, isUpdate: false);
+            NormalizeSlot(slot);
+            _repository.Add(slot);
         }
 
         public void Delete(int id)
         {
-            try
-            {
-                var slots = _repository.GetAll();
-                var slot = slots.FirstOrDefault(s => s.Id == id);
+            var slot = GetById(id);
+            if (slot == null)
+                throw new KeyNotFoundException("Slot nuk u gjet.");
 
-                if (slot == null)
-                    throw new Exception("Slot nuk u gjet");
-
-                slots.Remove(slot);
-                _repository.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Gabim gjatë fshirjes së slot-it: " + ex.Message);
-            }
+            _repository.Delete(id);
         }
 
         public void Update(int id, AvailableSlot updatedSlot)
         {
-            try
-            {
-                var slots = _repository.GetAll();
-                var existing = slots.FirstOrDefault(s => s.Id == id);
+            var existing = GetById(id);
+            if (existing == null)
+                throw new KeyNotFoundException("Slot nuk u gjet.");
 
-                if (existing == null)
-                    throw new Exception("Slot nuk u gjet");
+            updatedSlot.Id = id;
+            ValidateSlot(updatedSlot, isUpdate: true);
+            NormalizeSlot(updatedSlot);
 
-                if (string.IsNullOrWhiteSpace(updatedSlot.InstructorName))
-                    throw new Exception("Instructor name nuk mund të jetë bosh");
+            existing.InstructorName = updatedSlot.InstructorName;
+            existing.Date = updatedSlot.Date.Date;
+            existing.Time = updatedSlot.Time;
+            existing.IsBooked = updatedSlot.IsBooked;
 
-                if (string.IsNullOrWhiteSpace(updatedSlot.Time))
-                    throw new Exception("Time nuk mund të jetë bosh");
+            _repository.Save();
+        }
 
-                existing.InstructorName = updatedSlot.InstructorName;
-                existing.Date = updatedSlot.Date;
-                existing.Time = updatedSlot.Time;
-                existing.IsBooked = updatedSlot.IsBooked;
+        private void ValidateSlot(AvailableSlot slot, bool isUpdate)
+        {
+            if (slot == null)
+                throw new SlotValidationException("Te dhenat e slot-it mungojne.");
 
-                _repository.Save();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Gabim gjatë përditësimit të slot-it: " + ex.Message);
-            }
+            if (slot.Id <= 0)
+                throw new SlotValidationException("ID duhet te jete numer pozitiv.");
+
+            if (!isUpdate && GetById(slot.Id) != null)
+                throw new SlotValidationException("Ekziston tashme nje slot me kete ID.");
+
+            if (string.IsNullOrWhiteSpace(slot.InstructorName))
+                throw new SlotValidationException("Emri i instruktorit nuk mund te jete bosh.");
+
+            if (string.IsNullOrWhiteSpace(slot.Time))
+                throw new SlotValidationException("Ora nuk mund te jete bosh.");
+
+            if (!TimeOnly.TryParse(slot.Time, out _))
+                throw new SlotValidationException("Ora duhet te jete ne format te vlefshem, p.sh. 09:00.");
+
+            if (slot.Date == default)
+                throw new SlotValidationException("Data eshte e detyrueshme.");
+        }
+
+        private static void NormalizeSlot(AvailableSlot slot)
+        {
+            slot.InstructorName = slot.InstructorName.Trim();
+            slot.Time = slot.Time.Trim();
+            slot.Date = slot.Date.Date;
         }
     }
 }

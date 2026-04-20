@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using AutoshkollaAPI.Models;
 using AutoshkollaAPI.Services;
-using AutoshkollaAPI.Data;
 
 namespace AutoshkollaAPI.Controllers
 {
@@ -11,21 +10,18 @@ namespace AutoshkollaAPI.Controllers
     {
         private readonly SlotService _service;
 
-        public SlotsController()
+        public SlotsController(SlotService service)
         {
-            var repository = new FileRepository<AvailableSlot>("slots.csv");
-            _service = new SlotService(repository);
+            _service = service;
         }
 
-        // GET: api/slots
         [HttpGet]
-        public IActionResult GetAll(string instructorName = null, bool? isBooked = null)
+        public IActionResult GetAll(string? instructorName = null, bool? isBooked = null)
         {
             var result = _service.GetAll(instructorName, isBooked);
             return Ok(result);
         }
 
-        // GET: api/slots/1
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -37,7 +33,6 @@ namespace AutoshkollaAPI.Controllers
             return Ok(slot);
         }
 
-        // POST: api/slots
         [HttpPost]
         public IActionResult Add([FromBody] AvailableSlot slot)
         {
@@ -46,12 +41,16 @@ namespace AutoshkollaAPI.Controllers
                 _service.Add(slot);
                 return Ok("Slot added successfully");
             }
-            catch (Exception ex)
+            catch (SlotValidationException ex)
             {
-                return BadRequest("Gabim: " + ex.Message);
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ndodhi nje gabim gjate ruajtjes se slot-it.");
             }
         }
-        //DELETE
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -60,9 +59,13 @@ namespace AutoshkollaAPI.Controllers
                 _service.Delete(id);
                 return Ok("Deleted successfully");
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ndodhi nje gabim gjate fshirjes se slot-it.");
             }
         }
 
@@ -74,9 +77,65 @@ namespace AutoshkollaAPI.Controllers
                 _service.Update(id, slot);
                 return Ok("Updated successfully");
             }
-            catch (Exception ex)
+            catch (SlotValidationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ndodhi nje gabim gjate perditesimit te slot-it.");
+            }
+        }
+
+        [HttpPost("{id}/book")]
+        public IActionResult Book(int id)
+        {
+            try
+            {
+                var slot = _service.GetById(id);
+                if (slot == null)
+                    return NotFound("Slot nuk u gjet");
+                if (slot.IsBooked)
+                    return BadRequest("Orari është tashmë i rezervuar.");
+
+                slot.IsBooked = true;
+                _service.Update(id, slot);
+                return Ok(new { message = "Rezervimi u krye." });
+            }
+            catch (SlotValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ndodhi nje gabim gjate rezervimit.");
+            }
+        }
+
+        [HttpPost("{id}/release")]
+        public IActionResult Release(int id)
+        {
+            try
+            {
+                var slot = _service.GetById(id);
+                if (slot == null)
+                    return NotFound("Slot nuk u gjet");
+
+                slot.IsBooked = false;
+                _service.Update(id, slot);
+                return Ok(new { message = "Rezervimi u anulua." });
+            }
+            catch (SlotValidationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Ndodhi nje gabim gjate anulimit te rezervimit.");
             }
         }
     }

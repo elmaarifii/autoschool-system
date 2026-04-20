@@ -22,7 +22,7 @@ namespace AutoshkollaAPI.Data
                 if (!File.Exists(_filePath))
                 {
                     File.WriteAllText(_filePath, "Id,InstructorName,Date,Time,IsBooked\n");
-                    Console.WriteLine("File nuk u gjet, po krijohet një file i ri...");
+                    Console.WriteLine("File nuk u gjet, po krijohet nje file i ri...");
                     return list;
                 }
 
@@ -30,13 +30,20 @@ namespace AutoshkollaAPI.Data
 
                 foreach (var line in lines)
                 {
-                    if (string.IsNullOrWhiteSpace(line)) continue;
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
 
                     var parts = line.Split(',');
+                    if (parts.Length < 5)
+                    {
+                        continue;
+                    }
 
-                    int id = int.TryParse(parts[0], out var tempId) ? tempId : 0;
-                    DateTime date = DateTime.TryParse(parts[2], out var tempDate) ? tempDate : DateTime.Now;
-                    bool isBooked = bool.TryParse(parts[4], out var tempBooked) && tempBooked;
+                    var id = int.TryParse(parts[0], out var tempId) ? tempId : 0;
+                    var date = DateTime.TryParse(parts[2], out var tempDate) ? tempDate : DateTime.Now;
+                    var isBooked = bool.TryParse(parts[4], out var tempBooked) && tempBooked;
 
                     var slot = new AvailableSlot
                     {
@@ -52,7 +59,7 @@ namespace AutoshkollaAPI.Data
             }
             catch (Exception)
             {
-                Console.WriteLine("Gabim gjatë leximit të file.");
+                Console.WriteLine("Gabim gjate leximit te file.");
             }
 
             return list;
@@ -63,7 +70,7 @@ namespace AutoshkollaAPI.Data
             return _items;
         }
 
-        public T GetById(int id)
+        public T? GetById(int id)
         {
             return _items.FirstOrDefault(x => x.Id == id);
         }
@@ -101,14 +108,13 @@ namespace AutoshkollaAPI.Data
             try
             {
                 var lines = new List<string>
-        {
-            "Id,InstructorName,Date,Time,IsBooked"
-        };
+                {
+                    "Id,InstructorName,Date,Time,IsBooked"
+                };
 
                 foreach (var entity in _items)
                 {
                     var slot = (AvailableSlot)(object)entity;
-
                     lines.Add($"{slot.Id},{slot.InstructorName},{slot.Date:yyyy-MM-dd},{slot.Time},{slot.IsBooked}");
                 }
 
@@ -116,7 +122,7 @@ namespace AutoshkollaAPI.Data
             }
             catch (Exception)
             {
-                Console.WriteLine("Gabim gjatë ruajtjes së file.");
+                Console.WriteLine("Gabim gjate ruajtjes se file.");
             }
         }
     }

@@ -59,9 +59,7 @@ Në projekt është shtuar testing me **xUnit** për të testuar funksionalitete
 
 Testet gjenden në projektin:
 
-
 AutoshkollaAPI.Tests
-
 
 ### ▶️ Si të ekzekutohen testet
 
@@ -69,10 +67,14 @@ Nga root folder i projektit:
 
 ```bash
 dotnet test AutoshkollaAPI.Tests
+```
 
 Ose:
 
+```bash
 dotnet test AutoshkollaAPI.sln
+```
+
 ✅ Çfarë testohet
 ✔ Rast normal (valid input)
 ✔ Rast kufitar (invalid input, p.sh. emër bosh)
@@ -144,11 +146,20 @@ PostgreSQL
 
 Hapat:
 
+```bash
 dotnet run
+```
 
 Pastaj hap:
 
 https://localhost:xxxx/swagger
+
+### Shënime të rëndësishme
+
+- Endpoint-et e `Slots` përdorin `slots.csv` si storage lokal.
+- `Users` ruhen në PostgreSQL përmes `AppDbContext`.
+- Frontend-i aktual është një UI demonstrues dhe jo të gjitha veprimet janë të lidhura ende direkt me backend-in.
+- Për të testuar ndryshimet në backend, rifillo aplikacionin pas çdo ndryshimi në `Program.cs` ose `Controllers`.
 🌐 Frontend
 Hape folderin frontend
 Hap index.html në browser
