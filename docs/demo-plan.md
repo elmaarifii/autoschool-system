@@ -80,7 +80,7 @@ Permbledh cka funksionon live dhe cka mbetet per permiresim.
 
 Para prezantimit:
 
-- Te ekzekutoj backend-in me `dotnet run --launch-profile https`.
+- Te ekzekutoj backend-in me `dotnet run --project AutoshkollaAPI.csproj --launch-profile https`.
 - Te hap `UI/index.html` ne browser.
 - Te kontrolloj qe API URL eshte `https://localhost:7075`.
 - Te kem Swagger si backup: `https://localhost:7075/swagger`.
