@@ -1,179 +1,111 @@
-# 🚗 Autoschool System
+# Autoschool System
 
-**Autoschool System** është një aplikacion full-stack për menaxhimin e autoshkollës, i ndërtuar për të organizuar në mënyrë efikase procesin e mësimit teorik dhe praktik të vozitjes.
+Autoschool System eshte nje aplikacion per menaxhimin e orareve dhe rezervimeve ne autoshkolle. Projekti ka backend me ASP.NET Core Web API dhe nje frontend demonstrues me HTML, CSS dhe JavaScript.
 
-Ky sistem mundëson bashkëpunimin midis klientëve, instruktorëve dhe administratorëve, duke automatizuar oraret, rezervimet dhe përmbajtjen mësimore.
+Qellimi i projektit eshte te ndihmoje klientet, instruktoret dhe administratorin te kene me pak konfuzion rreth orareve te vozitjes: cilat jane te lira, cilat jane te rezervuara dhe si ndryshon statusi i nje sloti.
 
----
+## Flow kryesor per demo
 
-## 🎯 Qëllimi i Projektit
+Flow-i qe do te prezantohet live:
 
-Qëllimi i këtij projekti është të krijojë një sistem të strukturuar dhe të shkallëzueshëm për:
-
-- Menaxhimin e orareve të vozitjes  
-- Rezervimin dhe anulimin e orëve  
-- Shpërndarjen e materialeve teorike  
-- Testimin e njohurive përmes kuizeve  
-
----
-
-## 👥 Rolet në Sistem
-
-### 👤 Klienti
-- Regjistrohet dhe kyçet në sistem  
-- Shikon oraret e lira  
-- Rezervon dhe anulon orë  
-- Akseson materiale teorike  
-- Zgjidh kuize dhe sheh rezultatet  
-
-### 👨‍🏫 Instruktori
-- Vendos oraret e lira  
-- Shikon rezervimet  
-- Publikon materiale teorike  
-- Krijon kuize për testim  
-
-### 🛠️ Administratori
-- Menaxhon përdoruesit  
-- Menaxhon materialet dhe kuizet  
-- Kontrollon sistemin në tërësi  
-
----
-
-## ⚙️ Funksionalitetet Kryesore
-
-- ✅ Regjistrim dhe autentikim (Login/Register)  
-- 📅 Menaxhimi i orareve të instruktorëve  
-- 🧾 Rezervimi dhe anulimi i orëve  
-- 📚 Materiale teorike (tekst, video, dokumente)  
-- 📝 Kuize për testimin e njohurive  
-- 📊 Ruajtja e rezultateve dhe progresit  
-- 🛡️ Menaxhim nga administratori  
-
----
-
-## 🧪 Unit Testing
-
-Në projekt është shtuar testing me **xUnit** për të testuar funksionalitetet kryesore të backend-it.
-
-### 📦 Setup i testimeve
-
-Testet gjenden në projektin:
-
-AutoshkollaAPI.Tests
-
-### ▶️ Si të ekzekutohen testet
-
-Nga root folder i projektit:
-
-```bash
-dotnet test AutoshkollaAPI.Tests
+```text
+dashboard -> filter/kerkim -> rezultat -> rezervim/anulim -> status i perditesuar
 ```
 
-Ose:
+Ne demo hapet `UI/index.html`, filtrohen slotet sipas instruktorit ose statusit dhe pastaj rezervohet ose lirohet nje slot.
+
+## Funksionalitete qe punojne live
+
+- Shfaqja e te gjitha slot-eve nga `GET /api/Slots`
+- Filtrim sipas instruktorit
+- Filtrim sipas statusit `I lire` / `I rezervuar`
+- Rezervim i slotit me `POST /api/Slots/{id}/book`
+- Anulim/leshimi i slotit me `POST /api/Slots/{id}/release`
+- Validim i te dhenave ne `SlotService`
+- Plan B ne frontend me te dhena demo nese API nuk hapet gjate prezantimit
+
+## Teknologjite
+
+- Frontend: HTML, CSS, JavaScript
+- Backend: C# / ASP.NET Core Web API
+- Data access: Repository Pattern
+- Storage per slotet: `slots.csv`
+- Database e konfiguruar: PostgreSQL
+- Testing: xUnit
+
+## Si ta ekzekutosh projektin
+
+Kerkesat:
+
+- .NET SDK
+- Browser
+- PostgreSQL nese perdoret lidhja e plote me database
+
+Nis backend-in:
+
+```bash
+dotnet run --launch-profile https
+```
+
+Pastaj hap:
+
+```text
+https://localhost:7075/swagger
+```
+
+Per frontend:
+
+```text
+UI/index.html
+```
+
+Frontend-i perdor si API URL:
+
+```text
+https://localhost:7075
+```
+
+## Testet
+
+Testet gjenden ne projektin `AutoshkollaAPI.Tests`.
+
+Ekzekutimi:
 
 ```bash
 dotnet test AutoshkollaAPI.sln
 ```
 
-✅ Çfarë testohet
-✔ Rast normal (valid input)
-✔ Rast kufitar (invalid input, p.sh. emër bosh)
-✔ Verifikim i logjikës së shërbimeve (Services)
-🧾 Shembuj testesh
-Test për shtim të një slot-i valid
-Test për validim të input-it
-Test për kërkim të të dhënave
-💻 Teknologjitë e Përdorura
-Shtresa	Teknologjia
-Frontend	HTML, CSS, JavaScript
-Backend	C# / ASP.NET Core Web API
-Database	PostgreSQL
-ORM	Entity Framework Core
-Testing	xUnit
-Versioning	Git & GitHub
-🏗️ Arkitektura e Projektit
+## Arkitektura
 
-Projekti ndjek një arkitekturë me shtresa (Layered Architecture):
+Projekti ndjek ndarje me shtresa:
 
-Autoschool-System/
-│
-├── AutoshkollaAPI/
-│   ├── Controllers/        # API endpoints (UI Layer)
-│   ├── Models/             # Entitetet (User, Booking, Slot, etj.)
-│   ├── Services/           # Logjika e biznesit
-│   ├── Data/               # DbContext + Repository Pattern
-│
-├── docs/                   # UML + dokumentim
-├── AutoshkollaAPI.Tests/   # Unit tests (xUnit)
-├── frontend/               # HTML / CSS / JS
-│   └── index.html
-│
-├── .gitignore
-└── README.md
-🧠 Parimet e Dizajnit (SOLID)
+- `Models` - entitetet si `AvailableSlot`, `Booking`, `User`
+- `Controllers` - endpoint-et e API-se
+- `Services` - logjika e biznesit dhe validimi
+- `Data` - repository dhe ruajtja e te dhenave
+- `UI` - frontend demonstrues
+- `docs` - dokumentim dhe plan demo
 
-Projekti implementon parimet SOLID:
+Shembull i flow-it teknik:
 
-S – Single Responsibility Principle
-Çdo klasë ka një përgjegjësi të vetme
-O – Open/Closed Principle
-Sistemi mund të zgjerohet pa ndryshuar kodin ekzistues
-L – Liskov Substitution Principle
-Implementimet mund të zëvendësohen pa prishur sistemin
-I – Interface Segregation Principle
-Interface të fokusuara dhe të thjeshta
-D – Dependency Inversion Principle
-Varet nga abstractions, jo implementime konkrete
-🔄 Repository Pattern
-
-Është implementuar Repository Pattern për ndarjen e logjikës së aksesit në të dhëna:
-
-IRepository – interface bazë
-FileRepository – implementim për ruajtje në file
-
-Kjo e bën sistemin:
-
-më fleksibil
-më të testueshëm
-më të lehtë për zgjerim
-🚀 Si ta ekzekutosh projektin
-🔧 Backend
-
-Kërkesat:
-
-.NET SDK
-PostgreSQL
-
-Hapat:
-
-```bash
-dotnet run
+```text
+Frontend -> SlotsController -> SlotService -> IRepository -> slots.csv
 ```
 
-Pastaj hap:
+## Dokumentimi
 
-https://localhost:xxxx/swagger
+- `docs/demo-plan.md` - plani i demos live
+- `docs/architecture.md` - pershkrimi i arkitektures
+- `docs/class-diagram.md` - diagrami i klasave
+- `docs/implementation.md` - shenime implementimi
 
-### Shënime të rëndësishme
+## Statusi
 
-- Endpoint-et e `Slots` përdorin `slots.csv` si storage lokal.
-- `Users` ruhen në PostgreSQL përmes `AppDbContext`.
-- Frontend-i aktual është një UI demonstrues dhe jo të gjitha veprimet janë të lidhura ende direkt me backend-in.
-- Për të testuar ndryshimet në backend, rifillo aplikacionin pas çdo ndryshimi në `Program.cs` ose `Controllers`.
-🌐 Frontend
-Hape folderin frontend
-Hap index.html në browser
-📊 Dokumentimi
-📄 docs/architecture.md – përshkrimi i arkitekturës
-📄 docs/class-diagram.md – UML diagrami i klasave
-📌 Statusi i Projektit
+Projekti eshte ne zhvillim. Pjesa me e pergatitur per demo eshte menaxhimi i orareve dhe rezervimeve. Pjeset qe mbeten per permiresim jane autentikimi i plote, rolet ne frontend dhe lidhja e te gjitha moduleve me UI.
 
-🚧 Në zhvillim (Project in progress)
-Po shtohen funksionalitete në mënyrë iterative sipas kërkesave javore.
+## Autor
 
-👩‍💻 Autori
-
-Elma Arifi
-Universiteti i Mitrovicës “Isa Boletini”
-Fakulteti i Inxhinierisë Kompjuterike
+Elma Arifi  
+Universiteti i Mitrovices "Isa Boletini"  
+Fakulteti i Inxhinierise Kompjuterike  
 2026

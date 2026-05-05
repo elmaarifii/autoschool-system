@@ -1,9 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="sq">
 <head>
-    <title>Autoschool System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoschool System | Demo Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Mirësevini te Autoschool System</h1>
+    <div class="app-shell">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">AS</div>
+                <div>
+                    <h1>Autoschool System</h1>
+                    <p>Demo live dashboard</p>
+                </div>
+            </div>
+
+            <nav class="nav" aria-label="Demo navigation">
+                <button class="nav-btn active" type="button">Orari i vozitjes</button>
+                <button class="nav-btn" type="button">Rezervimet</button>
+                <button class="nav-btn" type="button">Instruktoret</button>
+            </nav>
+
+            <div class="demo-script">
+                <span class="eyebrow">Flow per prezantim</span>
+                <ol>
+                    <li>Hap dashboard-in</li>
+                    <li>Filtro oraret</li>
+                    <li>Rezervo ose liro nje slot</li>
+                    <li>Trego validimin dhe statusin</li>
+                </ol>
+            </div>
+        </aside>
+
+        <main class="content">
+            <header class="hero">
+                <div>
+                    <span class="eyebrow">Autoshkolle moderne</span>
+                    <h2>Menaxhim i qarte i orareve dhe rezervimeve.</h2>
+                    <p>
+                        Ky ekran tregon flow-in kryesor te projektit: instruktoret publikojne orare,
+                        klienti sheh slotet e lira dhe sistemi perditeson statusin e rezervimit.
+                    </p>
+                </div>
+                <div class="hero-actions">
+                    <button class="secondary-btn" id="resetFiltersBtn" type="button">Pastro filtrat</button>
+                    <button class="primary-btn" id="loadSlotsBtn" type="button">Rifresko te dhenat</button>
+                </div>
+            </header>
+
+            <section class="stats" aria-label="Permbledhje">
+                <article class="stat-card">
+                    <span>Totali</span>
+                    <strong id="totalSlots">0</strong>
+                    <small>slot-e ne sistem</small>
+                </article>
+                <article class="stat-card">
+                    <span>Te lira</span>
+                    <strong id="freeSlots">0</strong>
+                    <small>gati per rezervim</small>
+                </article>
+                <article class="stat-card">
+                    <span>Te rezervuara</span>
+                    <strong id="bookedSlots">0</strong>
+                    <small>me status aktiv</small>
+                </article>
+                <article class="stat-card">
+                    <span>Instruktore</span>
+                    <strong id="instructorCount">0</strong>
+                    <small>ne rezultat</small>
+                </article>
+            </section>
+
+            <section class="workspace">
+                <div class="panel filters-panel">
+                    <div class="panel-head">
+                        <div>
+                            <span class="eyebrow">Kerkim</span>
+                            <h3>Gjej slotin e duhur</h3>
+                        </div>
+                    </div>
+
+                    <label for="instructor">Instruktori</label>
+                    <input type="text" id="instructor" placeholder="p.sh. Arben">
+
+                    <label for="status">Statusi</label>
+                    <select id="status">
+                        <option value="">Te gjitha</option>
+                        <option value="false">Vetem te lira</option>
+                        <option value="true">Vetem te rezervuara</option>
+                    </select>
+
+                    <label for="apiBase">API URL</label>
+                    <input type="text" id="apiBase" value="https://localhost:7075" aria-label="API base URL">
+
+                    <button class="primary-btn full-width" id="applyFiltersBtn" type="button">Apliko filtrat</button>
+
+                    <div class="fallback-note">
+                        <strong>Plan B per demo:</strong>
+                        nese API nuk hapet live, ekrani shfaq te dhena demo dhe flow-i mund te shpjegohet pa u ndalur.
+                    </div>
+                </div>
+
+                <div class="panel table-panel">
+                    <div class="panel-head table-head">
+                        <div>
+                            <span class="eyebrow">Rezultati live</span>
+                            <h3>Orare te disponueshme</h3>
+                        </div>
+                        <p id="message" class="message info">Duke ngarkuar te dhenat...</p>
+                    </div>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Instruktori</th>
+                                    <th>Data</th>
+                                    <th>Ora</th>
+                                    <th>Statusi</th>
+                                    <th>Veprim</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
